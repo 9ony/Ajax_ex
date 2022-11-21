@@ -75,6 +75,68 @@
 	//--------------------------------
 	$(function(){
 		
+		$('#bt7').on('click',function(){
+			let keyword=prompt('검색어를 입력하세요','Ajax');
+			if(!keyword) return;
+			//네이버 검색 api로 요청을 직접 보내보자.
+			let url="JsonData7.jsp?query=" + encodeURIComponent(keyword);
+			$.ajax({
+				type:'get',
+				url:url,
+				dataType:'json',
+				cache:false,
+				success:function(res){
+					//alert(res);
+					let books = res.items;
+					let str='<h1>네이버 도서 정보 검색 결과['+keyword+']</h1>';
+					$.each(books,function(i,book){
+						str+='<div>';
+						str+='<a href="'+book.link+'" target="_blank">';
+						str+='<img src="'+book.image+'" style="width:200px; height:300px">';						
+						str+='<h3>'+book.title+'</h3>';						
+						str+='</a>';
+						str+='</div>';
+					})
+					$('#msg').html(str);
+				},
+				error:function(res){
+					alert('error: '+ err.status);
+					console.log(res.responseText);
+				}
+			})
+		})//#bt7------------
+		
+		/*
+	      자바스크립트 보안 정책
+	      : 자바스크립트는 같은 도메인일 경우마 통신 가능함
+	      - Ajax 통싱은 같은 도메인일 경우만 통신할 수 있기 때문에
+	      - java를 이용해 통신할 수 있다.            
+	      즉, 아래에 있는 코드로는 수행이 안됨
+	   */
+		
+		/* $('#bt7').on('click',function(){
+			let keyword=prompt('검색어를 입력하세요','Ajax');
+			if(!keyword) return;
+			//네이버 검색 api로 요청을 직접 보내보자.
+			let url="http://openapi.naver.com/v1/search/book.json?query="+encodeURIComponent(keyword);
+			$.ajax({
+				type:'get',
+				url:url,
+				headers:{
+					'X-Naver-Client-Id':'ClientID'
+					'X-Naver-Client-Secret':'ClientSecretKey'
+				},
+				dataType:'json',
+				cache:false,
+				success:function(res){
+					alert(res);
+				},
+				error:function(res){
+					alert('error: '+ err.status);
+					console.log(res.responseText);
+				}
+			})
+		})//#bt7------------ */
 		
 		$('#bt6').on('click',function(){
 			$.ajax({
